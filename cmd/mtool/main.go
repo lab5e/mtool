@@ -27,7 +27,6 @@ var opt struct {
 	WriteHoldingRegister writeHoldingRegisterCmd `command:"wh" description:"write holding register"`
 	ReadDiscreteInput    readDiscreteInputCmd    `command:"rd" description:"read discrete input"`
 	ReadCoils            readCoilsCmd            `command:"rc" description:"read coils"`
-	//WriteCoil            writeCoilsCmd           `command:"wc" description:"write coils"`
 }
 
 func main() {
