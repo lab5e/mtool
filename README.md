@@ -86,12 +86,11 @@ This still lists the global (application) options, but now you will also see the
 - `--repeat` is the repetition interval. This is specified with unit, so 1 second is 1s, 10 milliseconds is 10ms etc. (Valid units are ns,ms,s,m,h)
 - `--json` produces JSON output which can be useful if you want to parse the output later.
 
-
 ## Examples
 
 ### Repeatedly read holding register
 
-This example reads holding register 6 from device id 1 ever 2 seconds and outputs the result as base 16 (hexadecimal). 
+This example reads holding register 6 from device id 1 ever 2 seconds and outputs the result as base 16 (hexadecimal).  The result is output as JSON.
 
 ```shell
 $ mtool rh --id 1 --addr 6 --base 16 --json --repeat=2s

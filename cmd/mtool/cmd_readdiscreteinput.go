@@ -31,7 +31,7 @@ func (rd *readDiscreteInputCmd) Execute([]string) error {
 				ValueType: "discrete_input",
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
-				Data:      bytesToString(res, opt.OutputBase),
+				Data:      bytesToStringArray(res, opt.OutputBase),
 			}
 
 			// output JSON or string

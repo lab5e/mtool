@@ -31,7 +31,7 @@ func (ri *readInputRegisterCmd) Execute([]string) error {
 				ValueType: "input_register",
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
-				Data:      bytesToString(res, opt.OutputBase),
+				Data:      bytesToStringArray(res, opt.OutputBase),
 			}
 
 			// output JSON or string

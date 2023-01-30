@@ -32,7 +32,7 @@ func (rh *readHoldingRegisterCmd) Execute([]string) error {
 				ValueType: "holding_register",
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
-				Data:      bytesToString(res, opt.OutputBase),
+				Data:      bytesToStringArray(res, opt.OutputBase),
 			}
 
 			// output JSON or string

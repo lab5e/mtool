@@ -30,7 +30,7 @@ func (rc *readCoilsCmd) Execute([]string) error {
 				ValueType: "read_coil",
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
-				Data:      bytesToString(res, opt.OutputBase),
+				Data:      bytesToStringArray(res, opt.OutputBase),
 			}
 
 			// output JSON or string

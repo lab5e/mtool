@@ -12,7 +12,7 @@ type dataPoint struct {
 	ValueType string    `json:"valueType"`
 	DeviceID  byte      `json:"deviceID"`
 	Addr      uint16    `json:"addr"`
-	Data      string    `json:"data"`
+	Data      []string  `json:"data"`
 }
 
 func (d *dataPoint) JSON() string {
@@ -24,5 +24,5 @@ func (d *dataPoint) JSON() string {
 }
 
 func (d *dataPoint) String() string {
-	return fmt.Sprintf("%s valueType=%s deviceID=%d addr=%d data={%s}", d.Time.Format(time.RFC3339), d.ValueType, d.DeviceID, d.Addr, d.Data)
+	return fmt.Sprintf("%s valueType=%s deviceID=%d addr=%d data=%s", d.Time.Format(time.RFC3339), d.ValueType, d.DeviceID, d.Addr, d.Data)
 }
