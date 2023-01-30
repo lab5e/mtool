@@ -15,6 +15,7 @@ type readInputRegisterCmd struct {
 
 func (ri *readInputRegisterCmd) Execute([]string) error {
 	client := client()
+
 	for {
 		for _, addr := range ri.Addrs {
 			res, err := client.ReadInputRegisters(addr, ri.Count)
