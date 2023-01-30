@@ -17,15 +17,16 @@ var opt struct {
 	Device     string `long:"device" env:"MTOOL_DEVICE" description:"serial device" required:"yes"`
 	Baud       int    `long:"baud" env:"MTOOL_BAUD" default:"9600" description:"baud rate"`
 	DataBits   int    `long:"databits" env:"MTOOL_DATABITS" default:"8" description:"data bits"`
-	Parity     string `long:"parity" default:"N" description:"parity" choice:"N" choice:"E" choice:"O"`
-	StopBits   int    `long:"stop" default:"1" description:"stop bits" choice:"1" choice:"2"`
+	Parity     string `long:"parity" env:"MTOOL_PARITY" default:"N" description:"parity" choice:"N" choice:"E" choice:"O"`
+	StopBits   int    `long:"stop" env:"MTOOL_STOPBITS" default:"1" description:"stop bits" choice:"1" choice:"2"`
 	SlaveID    byte   `long:"slave" default:"1" description:"slave id" required:"yes"`
-	OutputBase int    `long:"base" default:"10" description:"output base" choice:"2" choice:"8" choice:"10" choice:"16"`
+	OutputBase int    `long:"base" env:"MTOOL_OUTPUT_BASE" default:"10" description:"output base" choice:"2" choice:"8" choice:"10" choice:"16"`
 
-	ReadInputRegister   readInputRegisterCmd   `command:"ri" description:"read input register"`
-	ReadHoldingRegister readHoldingRegisterCmd `command:"rh" description:"read holding register"`
-	ReadDiscreteInput   readDiscreteInputCmd   `command:"rd" description:"read discrete input"`
-	ReadCoils           readCoilsCmd           `command:"rc" description:"read coils"`
+	ReadInputRegister    readInputRegisterCmd    `command:"ri" description:"read input register"`
+	ReadHoldingRegister  readHoldingRegisterCmd  `command:"rh" description:"read holding register"`
+	WriteHoldingRegister writeHoldingRegisterCmd `command:"wh" description:"write holding register"`
+	ReadDiscreteInput    readDiscreteInputCmd    `command:"rd" description:"read discrete input"`
+	ReadCoils            readCoilsCmd            `command:"rc" description:"read coils"`
 }
 
 func main() {
