@@ -28,7 +28,7 @@ func (rc *readCoilsCmd) Execute([]string) error {
 			d := dataPoint{
 				Time:      time.Now().UTC(),
 				ValueType: "read_coil",
-				SlaveID:   opt.SlaveID,
+				DeviceID:  opt.DeviceID,
 				Addr:      addr,
 				Data:      bytesToString(res, opt.OutputBase),
 			}

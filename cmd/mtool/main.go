@@ -19,7 +19,7 @@ var opt struct {
 	DataBits   int    `long:"databits" env:"MTOOL_DATABITS" default:"8" description:"data bits"`
 	Parity     string `long:"parity" env:"MTOOL_PARITY" default:"N" description:"parity" choice:"N" choice:"E" choice:"O"`
 	StopBits   int    `long:"stop" env:"MTOOL_STOPBITS" default:"1" description:"stop bits" choice:"1" choice:"2"`
-	SlaveID    byte   `long:"slave" default:"1" description:"slave id" required:"yes"`
+	DeviceID   byte   `long:"id" default:"1" description:"device id" required:"yes"`
 	OutputBase int    `long:"base" env:"MTOOL_OUTPUT_BASE" default:"10" description:"output base" choice:"2" choice:"8" choice:"10" choice:"16"`
 
 	ReadInputRegister    readInputRegisterCmd    `command:"ri" description:"read input register"`
@@ -71,7 +71,7 @@ func client() modbus.Client {
 	handler.DataBits = opt.DataBits
 	handler.Parity = opt.Parity
 	handler.StopBits = opt.StopBits
-	handler.SlaveId = opt.SlaveID
+	handler.SlaveId = opt.DeviceID
 
 	err := handler.Connect()
 	if err != nil {
