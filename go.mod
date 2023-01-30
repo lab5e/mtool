@@ -1,4 +1,4 @@
-module github.com/lab5e/modtool
+module github.com/lab5e/mtool
 
 go 1.19
 
