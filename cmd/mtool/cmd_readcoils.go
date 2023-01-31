@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/lab5e/mtool/internal/util"
 )
 
 type readCoilsCmd struct {
@@ -30,7 +32,8 @@ func (rc *readCoilsCmd) Execute([]string) error {
 				ValueType: "read_coil",
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
-				Data:      bytesToStringArray(res, opt.OutputBase),
+				Count:     rc.Count,
+				Data:      util.BytesToStringArray(res, opt.OutputBase),
 			}
 
 			// output JSON or string

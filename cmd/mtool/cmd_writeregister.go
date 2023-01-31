@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+
+	"github.com/lab5e/mtool/internal/util"
 )
 
 type writeHoldingRegisterCmd struct {
@@ -16,6 +18,6 @@ func (wh *writeHoldingRegisterCmd) Execute([]string) error {
 		log.Fatalf("error writing holding register: %v", err)
 	}
 
-	fmt.Printf("deviceID=%d addr=%d res={%s}\n", opt.DeviceID, wh.Addr, bytesToString(res, opt.OutputBase))
+	fmt.Printf("deviceID=%d addr=%d res={%s}\n", opt.DeviceID, wh.Addr, util.BytesToStringArray(res, opt.OutputBase))
 	return nil
 }

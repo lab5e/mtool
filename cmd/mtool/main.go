@@ -4,9 +4,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/big"
 	"os"
-	"strings"
 
 	"github.com/goburrow/modbus"
 	"github.com/jessevdk/go-flags"
@@ -79,44 +77,4 @@ func client() modbus.Client {
 	}
 
 	return modbus.NewClient(handler)
-}
-
-func bytesToString(data []byte, base int) string {
-	ss := make([]string, len(data))
-	for i, d := range data {
-		ss[i] = big.NewInt(int64(d)).Text(base)
-
-		switch base {
-		case 2:
-			if len(ss[i]) < 8 {
-				ss[i] = strings.Repeat("0", 8-len(ss[i])) + ss[i]
-			}
-
-		case 16:
-			if len(ss[i]) < 8 {
-				ss[i] = "0" + ss[i]
-			}
-		}
-	}
-	return strings.Join(ss, ", ")
-}
-
-func bytesToStringArray(data []byte, base int) []string {
-	ss := make([]string, len(data))
-	for i, d := range data {
-		ss[i] = big.NewInt(int64(d)).Text(base)
-
-		switch base {
-		case 2:
-			if len(ss[i]) < 8 {
-				ss[i] = strings.Repeat("0", 8-len(ss[i])) + ss[i]
-			}
-
-		case 16:
-			if len(ss[i]) < 8 {
-				ss[i] = "0" + ss[i]
-			}
-		}
-	}
-	return ss
 }

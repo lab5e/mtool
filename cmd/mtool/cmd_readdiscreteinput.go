@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/lab5e/mtool/internal/util"
 )
 
 type readDiscreteInputCmd struct {
@@ -31,7 +33,8 @@ func (rd *readDiscreteInputCmd) Execute([]string) error {
 				ValueType: "discrete_input",
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
-				Data:      bytesToStringArray(res, opt.OutputBase),
+				Count:     rd.Count,
+				Data:      util.BytesToStringArray(res, opt.OutputBase),
 			}
 
 			// output JSON or string
