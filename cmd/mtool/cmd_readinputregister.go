@@ -14,6 +14,7 @@ type readInputRegisterCmd struct {
 	RepeatEvery time.Duration `long:"repeat" default:"0" description:"repeat interval, if zero no repeat"`
 	JSON        bool          `long:"json" description:"format data as JSON"`
 	Bytes       bool          `long:"bytes" description:"list values as bytes instead of int16"`
+	OutputBase  int           `long:"base" default:"10" description:"output base" choice:"2" choice:"8" choice:"10" choice:"16"`
 }
 
 func (ri *readInputRegisterCmd) Execute([]string) error {
@@ -21,7 +22,7 @@ func (ri *readInputRegisterCmd) Execute([]string) error {
 
 	for {
 		for _, addr := range ri.Addrs {
-			res, err := client.ReadInputRegisters(addr, ri.Count)
+			res, err := client.ReadInputRegisters(mapAddr(addr), ri.Count)
 			if err != nil {
 				return err
 			}
@@ -33,9 +34,9 @@ func (ri *readInputRegisterCmd) Execute([]string) error {
 
 			// select between bytes and int16
 			if ri.Bytes {
-				values = util.BytesToStringArray(res, opt.OutputBase)
+				values = util.BytesToStringArray(res, ri.OutputBase)
 			} else {
-				values, err = util.BytesToInt16StringArray(res, opt.OutputBase)
+				values, err = util.BytesToInt16StringArray(res, ri.OutputBase)
 				if err != nil {
 					return err
 				}

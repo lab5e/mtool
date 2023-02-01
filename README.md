@@ -12,98 +12,100 @@ go install github.com/lab5e/mtool/cmd/mtool@latest
 
 ## Usage
 
-The `mtool` utility has several subcommands. You can list these, and the global command line options, by runnig `mtool -h`.
+The `mtool` utility has several subcommands. You can list these, and the global command line options, by runnig `mtool -h`.  
 
-```shell
-$ mtool -h
-Usage:
-  mtool [OPTIONS] <command>
+Note that some of the command line options have default values (which the help `-h` option will list).  The idea is to cut down on the number of command line options you have to specify by hopefully providing sensible defaults.  For instance the modbus device ID defaults to 1 since a lot of devices have this ID right out of the box.
 
-Application Options:
-      --device=          serial device [$MTOOL_DEVICE]
-      --baud=            baud rate (default: 9600) [$MTOOL_BAUD]
-      --databits=        data bits (default: 8) [$MTOOL_DATABITS]
-      --parity=[N|E|O]   parity (default: N) [$MTOOL_PARITY]
-      --stop=[1|2]       stop bits (default: 1) [$MTOOL_STOPBITS]
-      --id=              device id (default: 1)
-      --base=[2|8|10|16] output base (default: 10) [$MTOOL_OUTPUT_BASE]
+### Environment variables
 
-Help Options:
-  -h, --help             Show this help message
-
-Available commands:
-  rc  read coils
-  rd  read discrete input
-  rh  read holding register
-  ri  read input register
-  wh  write holding register
-```
-
-For the global (application) options we have provided environment variables which can make using `mtool` a bit more convenient.  For instance it may be preferable to at least set the `MTOOL_DEVICE` to the serial device you are speaking to so you don't have to clutter the command line with this.
+For the global (application) options we have provided environment variables which can make using `mtool` a bit more convenient.  For instance it may be preferable to at least set the `MTOOL_DEVICE` to the serial device you are speaking to so you don't have to clutter the command line by having to include this every time.  The `-h` help output will list the other command line parameters that have environment variables you can set.
 
 ### Device id
 
-The device ID (`-id`) is the (hopefully) unique device ID on the modbus loop.  Before hooking up your devices, please make sure that each device is given a unique ID and that you have noted these somewhere.
+The device ID (`-id`) is the (hopefully) unique device ID on the modbus loop.  Before hooking up your devices, please make sure that each device is given a unique ID and that you have noted these somewhere.  
+
+### Addresses
+
+Note that modbus addresses (specified by the `--addr` flag) are one-based while the protocol itself is zero-based.  This means that the documentation will give an address as 10, while what is expected by the device is 9.  `mtool` subtracts 1 from the address you give it before putting it on the wire.
 
 ### Output base
 
 Sometimes you may want the values returned expressed in some other base than base 10.  To do this you can specify the `--base` option with `2` (binary), `8` (octal), `10` (decimal) or `16` (hexadecimal) as the base.
 
+### Repeatedly reading values
+
+All of the reading commands support the `--repeat` flag.  When this flag is not specified the read command will be executed only once.  If it is set to a value it will repeat the read operation every time unit specified.
+
+Time is expressed as a number followed by a unit.  Valid units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+
+This example reads holding register with address 1 every 500 milliseconds:
+
+```shell
+$ bin/mtool rh --addr 1 --repeat 500ms
+2023-02-01T13:17:06Z [holding_register] deviceID=1 addr=1 count=1 data={230}
+2023-02-01T13:17:07Z [holding_register] deviceID=1 addr=1 count=1 data={230}
+2023-02-01T13:17:08Z [holding_register] deviceID=1 addr=1 count=1 data={230}
+2023-02-01T13:17:08Z [holding_register] deviceID=1 addr=1 count=1 data={230}
+```
+
+### Debug output
+
+If you want to see the messages that are sent and received on the bus, you can add the `--debug` flag.  This will print out messages prefixed with `modbus:` showing the bytes that are being transmitted and received. *The debug output is not affected by the `--base` option*.
+
 ## Subcommands
 
-Each subcommand has its own options. We have tried to keep things as consistent as possible, so many of them will be the same.  To list command specific options, just append `-h` to your command line for a specific option.
-
-Example:
+The mtool command itself does nothing.  To make it do things you have to specify *subcommands*. The following sections specify the subcommands.  In order to list the options available to each subcommand you should use the built-in help for each subcommand.  You can do this by issuing a command of the form
 
 ```shell
-$ mtool rh -h
-Usage:
-  mtool [OPTIONS] rh [rh-OPTIONS]
-
-Application Options:
-      --device=          serial device [$MTOOL_DEVICE]
-      --baud=            baud rate (default: 9600) [$MTOOL_BAUD]
-      --databits=        data bits (default: 8) [$MTOOL_DATABITS]
-      --parity=[N|E|O]   parity (default: N) [$MTOOL_PARITY]
-      --stop=[1|2]       stop bits (default: 1) [$MTOOL_STOPBITS]
-      --id=              device id (default: 1)
-      --base=[2|8|10|16] output base (default: 10) [$MTOOL_OUTPUT_BASE]
-
-Help Options:
-  -h, --help             Show this help message
-
-[rh command options]
-          --addr=        address
-          --count=       count (default: 1)
-          --repeat=      repeat interval, if zero no repeat (default: 0)
-          --json         format data as JSON
+mtool <subcommand> -h
 ```
 
-This still lists the global (application) options, but now you will also see the options for the `rh` (read holding register) command too.
+### `rh` - read holding register
 
-- `--addr` refers to the short version of the holding register, eg `10`
-- `--count` is the number of registers you want to read
-- `--repeat` is the repetition interval. This is specified with unit, so 1 second is 1s, 10 milliseconds is 10ms etc. (Valid units are ns,ms,s,m,h)
-- `--json` produces JSON output which can be useful if you want to parse the output later.
+Read the holding register identified by `--addr`.
 
-## Examples
-
-### Repeatedly read holding register
-
-This example reads holding register 6 from device id 1 ever 2 seconds and outputs the result as base 16 (hexadecimal).  The result is output as JSON.
+This example reads holding register 1
 
 ```shell
-$ mtool rh --id 1 --addr 6 --base 16 --json --repeat=2s
-{"time":"2023-01-30T18:02:33.170332Z","valueType":"holding_register","deviceID":1,"addr":6,"data":"00, 05"}
-{"time":"2023-01-30T18:02:35.249169Z","valueType":"holding_register","deviceID":1,"addr":6,"data":"00, 05"}
-{"time":"2023-01-30T18:02:37.328873Z","valueType":"holding_register","deviceID":1,"addr":6,"data":"00, 05"}
+$ bin/mtool rh --addr 1
+2023-02-01T13:05:28Z [holding_register] deviceID=1 addr=1 count=1 data={230}
 ```
 
-### Write holding register
+### `wh` - write holding register
 
-This example writes holding register 6 on device 1, and sets it to the value 1 (decimal).  After successfully setting holding register 1, we output the response we get from the device.
+Write holding register identified by `--addr`.
+
+This example writes the `int16` value `230` to holding register 1
 
 ```shell
-$ bin/mtool wh --id 1 --addr 6 --value 1
-deviceID=1 addr=6 res={0, 1}
+$ bin/mtool wh --addr 1 --value 230
+deviceID=1 addr=1 res={230}
 ```
+
+You can check that the value has indeed been changed by reading the holding register back using the `rh` subcommand.
+
+### `ri` - read input register
+
+Read input register identified by `--addr`.
+
+This example reads input register 4:
+
+```shell
+bin/mtool ri --addr 4
+2023-02-01T13:03:50Z [input_register] deviceID=1 addr=4 count=1 data={2574}
+```
+
+### `rd` - read discrete input
+
+Read discrete input identified by `--addr`.  Note that this is a bit field.
+
+This example reads discrete input 4. Note that the output is in binary per default.  You can change the base with the `--base` command line option.
+
+```shell
+$ bin/mtool rd --addr 1 
+2023-02-01T13:06:48Z [discrete_input] deviceID=1 addr=1 count=1 data={11111011, 0000000000011101}
+```
+
+### `rc` - read coils
+
+Read coils identified by `-addr`.  Note that this is a bit field.  You can change the output base with the `--base` command line flag.

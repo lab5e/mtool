@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -25,5 +26,5 @@ func (d *dataPoint) JSON() string {
 }
 
 func (d *dataPoint) String() string {
-	return fmt.Sprintf("%s [%s] deviceID=%d addr=%d count=%d data=%s", d.Time.Format(time.RFC3339), d.ValueType, d.DeviceID, d.Addr, d.Count, d.Data)
+	return fmt.Sprintf("%s [%s] deviceID=%d addr=%d count=%d data={%s}", d.Time.Format(time.RFC3339), d.ValueType, d.DeviceID, d.Addr, d.Count, strings.Join(d.Data, ", "))
 }

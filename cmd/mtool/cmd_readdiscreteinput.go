@@ -13,6 +13,7 @@ type readDiscreteInputCmd struct {
 	Count       uint16        `long:"count" default:"1" description:"count"`
 	RepeatEvery time.Duration `long:"repeat" default:"0" description:"repeat interval, if zero no repeat"`
 	JSON        bool          `long:"json" description:"format data as JSON"`
+	OutputBase  int           `long:"base" default:"2" description:"output base" choice:"2" choice:"8" choice:"10" choice:"16"`
 }
 
 func (rd *readDiscreteInputCmd) Execute([]string) error {
@@ -20,7 +21,7 @@ func (rd *readDiscreteInputCmd) Execute([]string) error {
 
 	for {
 		for _, addr := range rd.Addrs {
-			res, err := client.ReadInputRegisters(addr, rd.Count)
+			res, err := client.ReadInputRegisters(mapAddr(addr), rd.Count)
 			if err != nil {
 				return err
 			}
@@ -34,7 +35,7 @@ func (rd *readDiscreteInputCmd) Execute([]string) error {
 				DeviceID:  opt.DeviceID,
 				Addr:      addr,
 				Count:     rd.Count,
-				Data:      util.BytesToStringArray(res, opt.OutputBase),
+				Data:      util.BytesToStringArray(res, rd.OutputBase),
 			}
 
 			// output JSON or string

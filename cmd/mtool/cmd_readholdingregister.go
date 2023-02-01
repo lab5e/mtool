@@ -15,6 +15,7 @@ type readHoldingRegisterCmd struct {
 	RepeatEvery time.Duration `long:"repeat" default:"0" description:"repeat interval, if zero no repeat"`
 	JSON        bool          `long:"json" description:"format data as JSON"`
 	Bytes       bool          `long:"bytes" description:"list values as bytes instead of int16"`
+	OutputBase  int           `long:"base" default:"10" description:"output base" choice:"2" choice:"8" choice:"10" choice:"16"`
 }
 
 func (rh *readHoldingRegisterCmd) Execute([]string) error {
@@ -22,7 +23,7 @@ func (rh *readHoldingRegisterCmd) Execute([]string) error {
 
 	for {
 		for _, addr := range rh.Addrs {
-			res, err := client.ReadHoldingRegisters(addr, rh.Count)
+			res, err := client.ReadHoldingRegisters(mapAddr(addr), rh.Count)
 
 			if err != nil {
 				return err
@@ -35,9 +36,9 @@ func (rh *readHoldingRegisterCmd) Execute([]string) error {
 
 			// select between bytes and int16
 			if rh.Bytes {
-				values = util.BytesToStringArray(res, opt.OutputBase)
+				values = util.BytesToStringArray(res, rh.OutputBase)
 			} else {
-				values, err = util.BytesToInt16StringArray(res, opt.OutputBase)
+				values, err = util.BytesToInt16StringArray(res, rh.OutputBase)
 				if err != nil {
 					return err
 				}
