@@ -14,6 +14,34 @@ go install github.com/lab5e/mtool/cmd/mtool@latest
 
 The `mtool` utility has several subcommands. You can list these, and the global command line options, by runnig `mtool -h`.  
 
+```shell
+$ mtool -h
+Usage:
+  mtool [OPTIONS] <command>
+
+Application Options:
+      --device=        serial device [$MTOOL_DEVICE]
+      --baud=          baud rate (default: 9600) [$MTOOL_BAUD]
+      --databits=      data bits (default: 8) [$MTOOL_DATABITS]
+      --parity=[N|E|O] parity (default: N) [$MTOOL_PARITY]
+      --stop=[1|2]     stop bits (default: 1) [$MTOOL_STOPBITS]
+      --id=            device id (default: 1) [$MTOOL_DEVICE_ID]
+      --timeout=       timeout (default: 5s)
+      --debug          enable debug output
+
+Help Options:
+  -h, --help           Show this help message
+
+Available commands:
+  doc   print documentation
+  rc    read coils
+  rd    read discrete input
+  rh    read holding register
+  ri    read input register
+  scan  scan modbus for devices
+  wh    write holding register
+```
+
 Note that some of the command line options have default values (which the help `-h` option will list).  The idea is to cut down on the number of command line options you have to specify by hopefully providing sensible defaults.  For instance the modbus device ID defaults to 1 since a lot of devices have this ID right out of the box.
 
 ### Environment variables
