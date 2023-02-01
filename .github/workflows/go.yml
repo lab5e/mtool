@@ -22,7 +22,7 @@ jobs:
         go-version: 1.19
 
     - name: Build
-      run: make
+      run: cd cmd/mtool && go build -o ../../bin/mtool
 
     - name: Test
       run: go test -v ./...
