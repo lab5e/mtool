@@ -60,6 +60,12 @@ The mtool command itself does nothing.  To make it do things you have to specify
 mtool <subcommand> -h
 ```
 
+### `scan` -scan bus for devices
+
+Scan the bus for devices by trying to read data from it.  Per default it will try to read holding register 1.  You can change what to read by setting the `--type` command line option to one of `holding`, `discrete`, `input` or `coil`.  You can change the address used for scanning by setting the `--addr` command line option.
+
+Depending on the devices you may have to configure how long the scanning process should wait for response from each device.  This can be done with the `--scan-timeout` option.  The default timeout is 100ms.  If you don't find any devices during a scan, try to increase the timeout value.
+
 ### `rh` - read holding register
 
 Read the holding register identified by `--addr`.
@@ -109,3 +115,7 @@ $ bin/mtool rd --addr 1
 ### `rc` - read coils
 
 Read coils identified by `-addr`.  Note that this is a bit field.  You can change the output base with the `--base` command line flag.
+
+### `doc` - output this documentation
+
+For convenience sake this README.md file is included in the binary.  You can spit it out as original markup or as HTML.
