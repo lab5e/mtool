@@ -101,7 +101,7 @@ Read the holding register identified by `--addr`.
 This example reads holding register 1
 
 ```shell
-$ bin/mtool rh --addr 1
+$ mtool rh --addr 1
 2023-02-01T13:05:28Z [holding_register] deviceID=1 addr=1 count=1 data={230}
 ```
 
@@ -112,7 +112,7 @@ Write holding register identified by `--addr`.
 This example writes the `int16` value `230` to holding register 1
 
 ```shell
-$ bin/mtool wh --addr 1 --value 230
+$ mtool wh --addr 1 --value 230
 deviceID=1 addr=1 res={230}
 ```
 
@@ -125,7 +125,7 @@ Read input register identified by `--addr`.
 This example reads input register 4:
 
 ```shell
-bin/mtool ri --addr 4
+$ mtool ri --addr 4
 2023-02-01T13:03:50Z [input_register] deviceID=1 addr=4 count=1 data={2574}
 ```
 
@@ -136,7 +136,7 @@ Read discrete input identified by `--addr`.  Note that this is a bit field.
 This example reads discrete input 4. Note that the output is in binary per default.  You can change the base with the `--base` command line option.
 
 ```shell
-$ bin/mtool rd --addr 1 
+$ mtool rd --addr 1 
 2023-02-01T13:06:48Z [discrete_input] deviceID=1 addr=1 count=1 data={11111011, 0000000000011101}
 ```
 
