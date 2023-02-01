@@ -28,6 +28,7 @@ var opt struct {
 	ReadDiscreteInput    readDiscreteInputCmd    `command:"rd" description:"read discrete input"`
 	ReadCoils            readCoilsCmd            `command:"rc" description:"read coils"`
 	Documentation        documentationCmd        `command:"doc" description:"print documentation"`
+	Scan                 scanCmd                 `command:"scan" description:"scan modbus for devices"`
 }
 
 func main() {
