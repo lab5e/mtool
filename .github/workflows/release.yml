@@ -1,26 +1,25 @@
-name: mtool release binaries
-
 on:
   release:
-  types: [created]
+    types: [created]
 
 jobs:
-  release-matrix:
-  name: Release binaries
-  runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      goos: [linux darwin windows]
-      goarch: [amd64 arm arm64]
-  steps:
-    - uses: actions/checkout@v2
+  releases-matrix:
+    name: Release binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux darwin windows]
+        goarch: [amd64 arm arm64]
+    steps:
+    - uses: actions/checkout@v3
     - name: Run tests
       run: go test ./...
-    - uses: wangyoucao577/go-release-action@v1.16
+    - uses: wangyoucao577/go-release-action@v1.35
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
+        goversion: "https://dl.google.com/go/go1.20.linux-amd64.tar.gz"
         project_path: "./cmd/mtool"
         binary_name: "mtool"
         extra_files: LICENSE README.md
