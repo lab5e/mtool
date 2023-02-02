@@ -4,12 +4,17 @@ on:
 
 jobs:
   releases-matrix:
-    name: Release binaries
+    name: Binaries for amd64 and arm64
     runs-on: ubuntu-latest
     strategy:
       matrix:
         goos: [linux,windows,darwin]
         goarch: [amd64,arm,arm64]
+        exclude:
+          - goos: windows
+            goarch: arm
+          - goos: darwin
+            goarch: arm
     steps:
     - uses: actions/checkout@v3
     - name: Run tests
@@ -23,3 +28,4 @@ jobs:
         project_path: "./cmd/mtool"
         binary_name: "mtool"
         extra_files: LICENSE README.md
+
