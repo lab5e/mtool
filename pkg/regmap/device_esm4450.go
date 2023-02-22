@@ -1,9 +1,12 @@
 package regmap
 
-// DeviceESM4450 is taken from the EMKO protocol documentation.  The descriptions and
+// deviceESM4450 is taken from the EMKO protocol documentation.  The descriptions and
 // some of the comments are from the original documentation and are left more or less
 // in their original form -- with its charming attempt at english.
-var DeviceESM4450 = Device{
+//
+// This device is defined here because we use it for testing and because we use this
+// device ourselves.
+var deviceESM4450 = Device{
 	Name:        "ESM-4450",
 	Description: "PID controller from EMKO",
 	Registers: []Register{

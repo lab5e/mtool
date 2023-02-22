@@ -7,6 +7,6 @@ import (
 )
 
 func TestDeviceESM4450(t *testing.T) {
-	errs := DeviceESM4450.Validate()
+	errs := deviceESM4450.Validate()
 	assert.Empty(t, errs)
 }
