@@ -22,7 +22,7 @@ func (wc *writeCoilsCmd) Execute([]string) error {
 		value = 0xff00
 	}
 
-	res, err := client().WriteSingleCoil(wc.Addr, value)
+	res, err := client().WriteSingleCoil(mapAddr(wc.Addr), value)
 	if err != nil {
 		log.Fatalf("error writing coil: %v", err)
 	}
