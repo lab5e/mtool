@@ -27,6 +27,7 @@ var opt struct {
 	WriteHoldingRegister writeHoldingRegisterCmd `command:"wh" description:"write holding register"`
 	ReadDiscreteInput    readDiscreteInputCmd    `command:"rd" description:"read discrete input"`
 	ReadCoils            readCoilsCmd            `command:"rc" description:"read coils"`
+	WriteCoils           writeCoilsCmd           `command:"wc" description:"write coils"`
 	Documentation        documentationCmd        `command:"doc" description:"print documentation"`
 	Scan                 scanCmd                 `command:"scan" description:"scan modbus for devices"`
 }

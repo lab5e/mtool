@@ -31,5 +31,4 @@ func TestDirectory(t *testing.T) {
 	_, err = dir.Get(deviceESM4450.Name)
 	require.ErrorIs(t, ErrDeviceNotFound, err)
 	require.ErrorIs(t, ErrDeviceNotFound, dir.Delete(deviceESM4450.Name))
-
 }
