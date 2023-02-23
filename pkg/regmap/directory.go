@@ -12,13 +12,14 @@ type Directory struct {
 	Devices map[string]Device `json:"devices" db:"-"`
 }
 
+// errors
 var (
 	ErrDuplicateDevice  = errors.New("duplicate device")
 	ErrDeviceNotFound   = errors.New("device not found")
 	ErrLoadingDirectory = errors.New("error loading directory")
 )
 
-// New directory.
+// NewDirectory creates a new directory instance.
 func NewDirectory() *Directory {
 	return &Directory{
 		Devices: map[string]Device{},

@@ -12,11 +12,14 @@ import (
 	"github.com/goburrow/modbus"
 )
 
+// MB is a Modbus library wrapper that will eventually use the device definitions
+// to expose registers by name.
 type MB struct {
 	mu      sync.Mutex
 	handler *modbus.RTUClientHandler
 }
 
+// Config for the MB layer.
 type Config struct {
 	Baud     int
 	DataBits int
@@ -80,6 +83,7 @@ func (m *MB) readHoldingRegister(deviceID byte, addr uint16) ([]byte, error) {
 	return client.ReadHoldingRegisters(addr-1, 1)
 }
 
+// Close the underlying handler.
 func (m *MB) Close() error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
