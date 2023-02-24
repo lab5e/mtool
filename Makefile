@@ -21,3 +21,6 @@ clean:
 
 count:
 	@gocloc .
+
+dep-install:
+	@go install github.com/mgechev/revive@latest
